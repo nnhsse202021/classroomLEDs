@@ -50,6 +50,52 @@ def update_LEDs():
 led_thread = threading.Thread(target = update_LEDs, daemon=True)
 led_thread.start()
 
+#Schedule
+# 7:35-9:00, 9:05-10:30, 10:35-12:00, 12:05-1:30
+# currently need hardcode schedule, make a way to adjust normal schedule
+# be able to add in priority date (possibly use priority queue) to override normal schedule
+# Input for color and brightness preset in schedule?
+def check_schedule():
+    #per 1: red, per 2: blue, per 3: green, per 4: yellow
+    test_schedule = [["10:05:00", "10:06:00"]]
+    norm_schedule = [["7:35:00", "9:00:00"], ["9:05:00", "10:30:00"], ["10:35:00", "12:00:00"], ["12:05:00", "1:30:00"]]
+    now = datetime.now()
+    period = 1
+    while True:
+        crnt_time = now.strftime("%H:%M:%S")
+        if crnt_time >= norm_scedule[1][1] and crnt_time <= norm_scedule[1][2]:
+            led_color = RED
+            pixels.fill(color_with_brightness)
+        pixels.show()
+        time.sleep(0.5)
+        else if crnt_time >= norm_scedule[2][1] and crnt_time <= norm_scedule[2][2]:
+            led_color = BLUE
+            pixels.fill(color_with_brightness)
+        pixels.show()
+        time.sleep(0.5)
+        else if crnt_time >= norm_scedule[3][1] and crnt_time <= norm_scedule[3][2]:
+            led_color = green
+            pixels.fill(color_with_brightness)
+        pixels.show()
+        time.sleep(0.5)
+        else if crnt_time >= norm_scedule[4][1] and crnt_time <= norm_scedule[4][2]:
+            led_color = yellow
+            pixels.fill(color_with_brightness)
+        pixels.show()
+        time.sleep(0.5)
+        else:
+            False
+
+#Override Schedule
+# possibly use priority queue
+# can either create override in checl_schedule(), or
+#     add override check when implementing in main
+        
+        
+        
+
+
+
 while True:
     
     try:

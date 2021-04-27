@@ -91,6 +91,8 @@ def rainbow_cycle(wait):
         time.sleep(wait)
 
 
+
+
 RED = (255, 0, 0)
 YELLOW = (255, 150, 0)
 ORANGE = (255, 40, 0)

@@ -90,13 +90,47 @@ const createScene = (req, res, next) => {
       throw err;
     }
     newID = Math.max.apply(Math, led.scenes.map(o => { return o.id; })) + 1;
-    const newScene = {
-      id: newID,
-      time: req.body.time,
-      color: req.body.color,
-      brightness: req.body.brightness,
-      mode: req.body.mode,
-    };
+    const newScene;
+    if(req.body.hasOwnProperty(“day_of_week”))
+      {
+        newScene = {
+          id: newID,
+          color: req.body.color,
+          brightness: req.body.brightness,
+          mode: req.body.mode,
+          day_of_week: req.body.day_of_week,
+          start_time: req.body.start_time
+        };
+      }
+    else if(req.body.hasOwnProperty("date"))
+      {
+        newScene = {
+          id: newID,
+          color: req.body.color,
+          brightness: req.body.brightness,
+          mode: req.body.mode,
+          date: req.body.date,
+          start_time: req.body.start_time
+        };
+      }
+    else if(req.body.hasOwnProperty("override_duration"))
+      {
+        newScene = {
+          id: newID,
+          color: req.body.color,
+          brightness: req.body.brightness,
+          mode: req.body.mode,
+          override_duration: req.body.override_duration,
+          start_time: req.body.start_time
+        };
+      }
+    else
+    {
+      const err = new Error('Invalid scene specification');
+      err.status = 404;
+      throw err;
+    }
+    
     led.scenes.push(newScene);
     fs.writeFileSync(ledsFilePath, JSON.stringify(leds));
     res.status(201).json(newScene);

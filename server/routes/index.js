@@ -91,7 +91,7 @@ const createScene = (req, res, next) => {
     }
     newID = Math.max.apply(Math, led.scenes.map(o => { return o.id; })) + 1;
     const newScene;
-    if(req.body.hasOwnProperty(“day_of_week”))
+    if(req.body.hasOwnProperty("day_of_week"))
       {
         newScene = {
           id: newID,
@@ -155,12 +155,36 @@ const updateScene = (req, res, next) => {
       err.status = 404;
       throw err;
     }
-    scene.time = req.body.time;
-    scene.color = req.body.color;
-    scene.brightness = req.body.brightness;
-    scene.mode = req.body.mode;
-    fs.writeFileSync(ledsFilePath, JSON.stringify(leds));
-    res.status(200).json(scene);
+    if(req.body.hasOwnProperty("day_of_week"))
+      {
+        scene.start_time = req.body.start_time;
+        scene.color = req.body.color;
+        scene.brightness = req.body.brightness;
+        scene.mode = req.body.mode;
+        scene.day_of_week = req.body.day_of_week;
+        fs.writeFileSync(ledsFilePath, JSON.stringify(leds));
+        res.status(200).json(scene);    
+      }
+    else if(req.body.hasOwnProperty("date"))
+      {
+        scene.start_time = req.body.start_time;
+        scene.color = req.body.color;
+        scene.brightness = req.body.brightness;
+        scene.mode = req.body.mode;
+        scene.date = req.body.date;
+        fs.writeFileSync(ledsFilePath, JSON.stringify(leds));
+        res.status(200).json(scene);    
+      }
+    else if(req.body.hasOwnProperty("override_duration"))
+      {
+        scene.start_time = req.body.start_time;
+        scene.color = req.body.color;
+        scene.brightness = req.body.brightness;
+        scene.mode = req.body.mode;
+        scene.override_duration = req.body.override_duration;
+        fs.writeFileSync(ledsFilePath, JSON.stringify(leds));
+        res.status(200).json(scene);          
+        };
   } catch (e) {
     next(e);
   }
